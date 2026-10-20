@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escape Room - Das Rätsel</title>
+    <title>EXIT Rätsel - Das Symbol-Schloss</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
@@ -19,7 +16,7 @@
             margin: 0;
         }
         .container {
-            background: rgba(42, 42, 42, 0.85);
+            background: rgba(42, 42, 42, 0.9);
             padding: 40px;
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.7);
@@ -29,69 +26,61 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         h1 {
-            margin-top: 0;
             color: #ff9800;
+            margin-top: 0;
         }
         p {
             color: #cccccc;
             font-size: 15px;
-            line-height: 1.5;
         }
-        input {
-            padding: 12px;
-            font-size: 22px;
-            width: 150px;
-            text-align: center;
+        .symbol-display {
+            font-size: 35px;
+            background: #1a1a1a;
+            padding: 15px;
             border-radius: 8px;
             border: 2px solid #555;
-            background-color: #1a1a1a;
-            color: white;
-            margin: 15px 0;
-            letter-spacing: 5px;
+            margin: 20px 0;
+            letter-spacing: 15px;
+            min-height: 50px;
         }
-        input:focus {
-            border-color: #ff9800;
-            outline: none;
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
         }
-        button {
-            padding: 12px 24px;
-            font-size: 16px;
+        .symbol-btn {
+            font-size: 28px;
+            padding: 15px;
+            cursor: pointer;
+            background-color: #333;
+            border: 1px solid #555;
+            border-radius: 8px;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .symbol-btn:hover {
+            background-color: #444;
+            transform: translateY(-2px);
+        }
+        .action-btn {
+            padding: 10px 20px;
+            font-size: 15px;
             cursor: pointer;
             background-color: #ff9800;
             color: white;
             border: none;
             border-radius: 8px;
             font-weight: bold;
-            transition: background 0.2s, transform 0.1s;
+            margin: 5px;
         }
-        button:hover {
+        .action-btn:hover {
             background-color: #e68900;
-            transform: translateY(-2px);
         }
-        button:active {
-            transform: translateY(0);
+        .btn-clear {
+            background-color: #d32f2f;
         }
-        .btn-hint {
-            background-color: #333;
-            color: #ffeb3b;
-            border: 1px solid #ffeb3b;
-            margin-bottom: 20px;
-            font-size: 14px;
-            padding: 8px 16px;
-        }
-        .btn-hint:hover {
-            background-color: #444;
-        }
-        .hidden {
-            display: none;
-        }
-        #hint {
-            color: #ffeb3b;
-            margin-top: 10px;
-            font-style: italic;
-            background: rgba(255, 235, 59, 0.1);
-            padding: 10px;
-            border-radius: 5px;
+        .btn-clear:hover {
+            background-color: #b71c1c;
         }
         #result {
             margin-top: 20px;
@@ -103,37 +92,67 @@
 <body>
 
     <div class="container">
-        <h1>🔐 Escape Rätsel</h1>
-        <p>Du bist in einem virtuellen Raum gefangen. Löse das Rätsel und finde den 3-stelligen Code, um das Schloss zu öffnen!</p>
+        <h1>🔐 Das Symbol-Schloss</h1>
+        <p>Kombiniere die 3 richtigen Symbole, um das Schloss zu knacken!</p>
         
-        <br>
-        <!-- Hinweis-Bereich -->
-        <button class="btn-hint" onclick="showHint()">💡 Tipp anzeigen</button>
-        <div id="hint" class="hidden">Tipp: Die Antwort findest du, wenn du 100 + 23 rechnest.</div>
+        <!-- Anzeige des eingegebenen Codes -->
+        <div class="symbol-display" id="display">___</div>
         
-        <br>
-        
-        <!-- Code-Eingabe -->
-        <div>
-            <input type="text" id="codeInput" maxlength="3" placeholder="___">
-        </div>
-        <div>
-            <button onclick="checkCode()">Code überprüfen</button>
+        <!-- Symbol-Auswahl -->
+        <div class="button-grid">
+            <button class="symbol-btn" onclick="addSymbol('⭐')">⭐</button>
+            <button class="symbol-btn" onclick="addSymbol('🗝️')">🗝️</button>
+            <button class="symbol-btn" onclick="addSymbol('🌙')">🌙</button>
+            <button class="symbol-btn" onclick="addSymbol('💀')">💀</button>
+            <button class="symbol-btn" onclick="addSymbol('🧪')">🧪</button>
+            <button class="symbol-btn" onclick="addSymbol('👁️')">👁️</button>
         </div>
         
-        <!-- Ergebnis-Anzeige -->
+        <!-- Steuerungs-Buttons -->
+        <div>
+            <button class="action-btn btn-clear" onclick="clearCode()">Löschen</button>
+            <button class="action-btn" onclick="checkCode()">Überprüfen</button>
+        </div>
+        
+        <!-- Ergebnis -->
         <p id="result"></p>
     </div>
 
     <script>
-        function showHint() {
-            document.getElementById('hint').classList.remove('hidden');
+        let currentCode = [];
+        const maxCodeLength = 3;
+        const secretCode = "⭐🗝️🌙"; // Der richtige Code (Stern, Schlüssel, Mond)
+
+        function addSymbol(symbol) {
+            if (currentCode.length < maxCodeLength) {
+                currentCode.push(symbol);
+                updateDisplay();
+            }
+        }
+
+        function clearCode() {
+            currentCode = [];
+            updateDisplay();
+            document.getElementById('result').textContent = "";
+        }
+
+        function updateDisplay() {
+            let displayString = "";
+            for (let i = 0; i < maxCodeLength; i++) {
+                displayString += currentCode[i] || "_";
+            }
+            document.getElementById('display').textContent = displayString;
         }
 
         function checkCode() {
-            const secretCode = "123"; // Hier den Code anpassen!
-            const userCode = document.getElementById('codeInput').value;
+            const userCode = currentCode.join("");
             const result = document.getElementById('result');
+
+            if (currentCode.length < maxCodeLength) {
+                result.style.color = "#ff9800";
+                result.textContent = "⚠️ Bitte wähle 3 Symbole aus!";
+                return;
+            }
 
             if (userCode === secretCode) {
                 result.style.color = "#4CAF50";
