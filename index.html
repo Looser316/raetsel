@@ -55,6 +55,29 @@
             background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
         }
 
+        /* Tipp-Button oben rechts */
+        .tip-btn-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .tip-toggle-btn {
+            background: none;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tip-toggle-btn:hover {
+            background-color: var(--accent-color);
+            color: #000;
+        }
+
         h1 {
             text-align: center;
             font-size: 1.8rem;
@@ -77,6 +100,35 @@
             gap: 15px;
         }
 
+        /* Klickbare Symbol-Leiste */
+        .symbol-palette {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .symbol-btn {
+            background-color: #0b0d12;
+            border: 1px solid #333a4d;
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .symbol-btn:hover {
+            border-color: var(--accent-color);
+            background-color: #1f2433;
+            transform: translateY(-2px);
+        }
+
         .input-group {
             display: flex;
             gap: 10px;
@@ -89,10 +141,10 @@
             border: 2px solid #333a4d;
             border-radius: 8px;
             color: var(--accent-color);
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             text-align: center;
-            letter-spacing: 5px;
-            padding: 12px;
+            letter-spacing: 3px;
+            padding: 10px;
             outline: none;
             transition: border-color 0.3s;
         }
@@ -101,31 +153,46 @@
             border-color: var(--accent-color);
         }
 
-        button {
+        .submit-btn {
             background-color: var(--accent-color);
             color: #000;
             border: none;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: bold;
-            padding: 12px 20px;
+            padding: 0 20px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.1s;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        button:hover {
+        .submit-btn:hover {
             background-color: var(--accent-hover);
         }
 
-        button:active {
-            transform: scale(0.98);
+        /* Aktionen für Löschen */
+        .action-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+        }
+
+        .clear-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .clear-btn:hover {
+            color: var(--error-color);
         }
 
         /* Nachrichten- und Kartenbereich */
         .message-box {
-            margin-top: 25px;
+            margin-top: 20px;
             min-height: 80px;
             display: flex;
             align-items: center;
@@ -171,11 +238,49 @@
             line-height: 1.5;
         }
 
-        .hint-helper {
-            margin-top: 20px;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-align: center;
+        /* Modal für Tipps */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background-color: var(--panel-bg);
+            border: 2px solid var(--accent-color);
+            padding: 25px;
+            border-radius: 12px;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+        }
+
+        .modal-content h3 {
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .modal-content ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .close-modal {
+            background-color: var(--accent-color);
+            color: #000;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            float: right;
         }
 
         @keyframes fadeIn {
@@ -187,62 +292,98 @@
 <body>
 
     <div class="container">
+        <!-- Tipp-Button -->
+        <div class="tip-btn-container">
+            <button class="tip-toggle-btn" onclick="toggleTips(true)">💡 Hinweise anzeigen</button>
+        </div>
+
         <h1>EXIT – Das Rätsel</h1>
-        <p class="subtitle">Gib den 3stelligen Code ein, um das Rätsel zu lösen.</p>
+        <p class="subtitle">Klicke Symbole an, um den 3er-Code einzugeben.</p>
         
         <div class="code-form">
+            <!-- Symbol-Auswahl zum Anklicken -->
+            <div class="symbol-palette">
+                <button class="symbol-btn" onclick="appendSymbol('◯')">◯</button>
+                <button class="symbol-btn" onclick="appendSymbol('△')">△</button>
+                <button class="symbol-btn" onclick="appendSymbol('⭐')">⭐</button>
+                <button class="symbol-btn" onclick="appendSymbol('▢')">▢</button>
+            </div>
+
             <div class="input-group">
-                <input type="text" id="codeInput" maxlength="5" placeholder="???">
-                <button onclick="checkCode()">Öffnen</button>
+                <input type="text" id="codeInput" readonly placeholder="---">
+                <button class="submit-btn" onclick="checkCode()">Öffnen</button>
+            </div>
+
+            <div class="action-row">
+                <button class="clear-btn" onclick="clearCode()">Eingabe löschen</button>
             </div>
         </div>
 
         <div class="message-box" id="messageBox">
             <!-- Hier erscheinen Fehlermeldungen oder Lösungskarten -->
         </div>
+    </div>
 
-        <div class="hint-helper">
-            Tipp: Symbole können als Kürzel eingegeben werden (z.B. s=Stern, k=Kreis, d=Dreieck) oder nutze Zahlen wie 123.
+    <!-- Tipp-Modal (Popup) -->
+    <div class="modal" id="tipModal">
+        <div class="modal-content">
+            <h3>Geheime Hinweise</h3>
+            <ul>
+                <li><strong>Tipp 1:</strong> Zähle die Ecken der geometrischen Formen im Bilderrätsel.</li>
+                <li><strong>Tipp 2:</strong> Der Stern zeigt immer nach Norden – vielleicht ist die Reihenfolge wichtig?</li>
+            </ul>
+            <button class="close-modal" onclick="toggleTips(false)">Schließen</button>
         </div>
     </div>
 
     <script>
-        // Definition der verschiedenen Code-Kombinationen und ihrer Lösungskarten
+        // Definition der verschiedenen Code-Kombinationen (jetzt mit Symbolen)
         const codes = {
-            "123": {
-                title: "Lösungskarte A – Das alte Buch",
-                text: "Du hast das erste Schloss geknackt! Auf der Innenseite des Buchdeckels entdeckst du eine geheimnisvolle Notiz: 'Suche dort, wo das Licht erlischt.' Gehe zu Rätsel 2 über."
+            "◯△⭐": {
+                title: "Lösungskarte A – Das mystische Siegel",
+                text: "Das Siegel bricht auf! Du hörst ein schweres Rumpeln im Hintergrund. Ein geheimer Durchgang tut sich auf."
             },
-            "k-d-s": {
-                title: "Lösungskarte B – Das versteckte Fach",
-                text: "Ausgezeichnet! Das Symbol-Rätsel ist gelöst. Eine kleine Holzklappe springt auf und gibt den Blick frei auf einen messingfarbenen Schlüssel."
+            "⭐▢◯": {
+                title: "Lösungskarte B – Die Schatulle",
+                text: "Ein leises 'Klick' ertönt. Der Deckel der Schatulle hebt sich und gibt eine alte Pergamentrolle frei."
             },
-            "7-7-7": {
-                title: "Lösungskarte C – Der Geheimcode",
-                text: "Glückwunsch! Die mystische Dreier-Sieben schaltet den Hauptmechanismus frei. Der Weg in den nächsten Raum öffnet sich."
+            "△△◯": {
+                title: "Lösungskarte C – Der Spiegel",
+                text: "Die Reflexion im Spiegel verändert sich und zeigt dir plötzlich Symbole, die vorher unsichtbar waren."
             }
         };
 
-        // Event-Listener, damit man auch mit der Enter-Taste abschicken kann
-        document.getElementById("codeInput").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                checkCode();
+        // Funktion zum Hinzufügen von Symbolen (max. 3 Zeichen/Symbole)
+        function appendSymbol(symbol) {
+            const inputField = document.getElementById("codeInput");
+            if (inputField.value.length < 3) {
+                inputField.value += symbol;
             }
-        });
+        }
 
+        // Funktion zum Zurücksetzen der Eingabe
+        function clearCode() {
+            document.getElementById("codeInput").value = "";
+            document.getElementById("messageBox").innerHTML = "";
+        }
+
+        // Tipp-Fenster öffnen/schließen
+        function toggleTips(show) {
+            const modal = document.getElementById("tipModal");
+            modal.style.display = show ? "flex" : "none";
+        }
+
+        // Code überprüfen
         function checkCode() {
             const inputField = document.getElementById("codeInput");
             const messageBox = document.getElementById("messageBox");
-            // Eingabe bereinigen: Leerzeichen entfernen und Kleinbuchstaben nutzen
-            const enteredCode = inputField.value.trim().toLowerCase();
+            const enteredCode = inputField.value.trim();
 
-            // Prüfen, ob das Feld leer ist
-            if (enteredCode === "") {
-                messageBox.innerHTML = `<div class="alert error">Bitte gib einen Code ein!</div>`;
+            if (enteredCode.length < 3) {
+                messageBox.innerHTML = `<div class="alert error">Der Code muss aus 3 Symbolen bestehen!</div>`;
                 return;
             }
 
-            // Prüfen, ob der Code in unserem Objekt existiert
             if (codes[enteredCode]) {
                 const card = codes[enteredCode];
                 messageBox.innerHTML = `
@@ -252,8 +393,7 @@
                     </div>
                 `;
             } else {
-                // Falscher Code
-                messageBox.innerHTML = `<div class="alert error">Falsch! Dieser Code bewirkt nichts. Suche weiter nach Hinweisen.</div>`;
+                messageBox.innerHTML = `<div class="alert error">Falsch! Dieser Code bewirkt nichts. Suche weiter.</div>`;
             }
         }
     </script>
