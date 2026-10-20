@@ -8,10 +8,9 @@
         :root {
             --bg-color: #0d0f12;
             --panel-bg: #161922;
-            --accent-color: #d4af37; /* Mystisches Gold */
+            --accent-color: #d4af37;
             --accent-hover: #f39c12;
             --error-color: #e74c3c;
-            --success-color: #2ecc71;
             --text-color: #e0e0e0;
             --text-muted: #888888;
         }
@@ -37,7 +36,7 @@
 
         .container {
             width: 100%;
-            max-width: 550px;
+            max-width: 600px;
             background-color: var(--panel-bg);
             border: 2px solid #2a2f40;
             border-radius: 12px;
@@ -55,18 +54,18 @@
             background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
         }
 
-        /* Tipp-Button oben rechts */
-        .tip-btn-container {
+        .header-top {
             display: flex;
-            justify-content: flex-end;
-            margin-bottom: 10px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
         .tip-toggle-btn {
             background: none;
             border: 1px solid var(--accent-color);
             color: var(--accent-color);
-            padding: 5px 12px;
+            padding: 5px 10px;
             font-size: 0.8rem;
             border-radius: 6px;
             cursor: pointer;
@@ -79,33 +78,63 @@
         }
 
         h1 {
-            text-align: center;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: var(--accent-color);
-            margin-bottom: 10px;
             letter-spacing: 2px;
             text-transform: uppercase;
         }
 
         p.subtitle {
-            text-align: center;
             color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 25px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
         }
 
+        /* Rätsel-Symbol Auswahl */
+        .section-label {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .puzzle-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .puzzle-tab {
+            flex: 1;
+            background-color: #0b0d12;
+            border: 2px solid #333a4d;
+            color: var(--text-muted);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+        }
+
+        .puzzle-tab.active {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            background-color: #1f2433;
+        }
+
+        /* Code-Eingabe Bereich */
         .code-form {
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
 
-        /* Klickbare Symbol-Leiste */
         .symbol-palette {
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 5px;
         }
 
         .symbol-btn {
@@ -126,13 +155,11 @@
         .symbol-btn:hover {
             border-color: var(--accent-color);
             background-color: #1f2433;
-            transform: translateY(-2px);
         }
 
         .input-group {
             display: flex;
             gap: 10px;
-            justify-content: center;
         }
 
         input[type="text"] {
@@ -141,16 +168,11 @@
             border: 2px solid #333a4d;
             border-radius: 8px;
             color: var(--accent-color);
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             text-align: center;
             letter-spacing: 3px;
             padding: 10px;
             outline: none;
-            transition: border-color 0.3s;
-        }
-
-        input[type="text"]:focus {
-            border-color: var(--accent-color);
         }
 
         .submit-btn {
@@ -158,24 +180,19 @@
             color: #000;
             border: none;
             border-radius: 8px;
-            font-size: 0.95rem;
             font-weight: bold;
             padding: 0 20px;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.1s;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .submit-btn:hover {
             background-color: var(--accent-hover);
         }
 
-        /* Aktionen für Löschen */
         .action-row {
             display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
+            justify-content: flex-end;
         }
 
         .clear-btn {
@@ -183,6 +200,7 @@
             border: none;
             color: var(--text-muted);
             cursor: pointer;
+            font-size: 0.85rem;
             text-decoration: underline;
         }
 
@@ -190,44 +208,34 @@
             color: var(--error-color);
         }
 
-        /* Nachrichten- und Kartenbereich */
+        /* Nachrichten & Lösungskarten */
         .message-box {
             margin-top: 20px;
             min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .alert {
-            width: 100%;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-            animation: fadeIn 0.4s ease-in-out;
         }
 
         .alert.error {
             background-color: rgba(231, 76, 60, 0.15);
             border: 1px solid var(--error-color);
             color: var(--error-color);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
         }
 
         .solution-card {
-            width: 100%;
             background-color: #1f2433;
             border: 1px solid var(--accent-color);
             border-radius: 8px;
             padding: 20px;
-            animation: fadeIn 0.5s ease-in-out;
             box-shadow: 0 4px 15px rgba(212, 175, 55, 0.1);
         }
 
         .solution-card h3 {
             color: var(--accent-color);
             margin-bottom: 8px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             border-bottom: 1px solid #333a4d;
             padding-bottom: 5px;
         }
@@ -256,7 +264,6 @@
             border-radius: 12px;
             max-width: 400px;
             width: 90%;
-            position: relative;
         }
 
         .modal-content h3 {
@@ -264,12 +271,11 @@
             margin-bottom: 15px;
         }
 
-        .modal-content ul {
-            margin-left: 20px;
-            margin-bottom: 20px;
+        .modal-content p {
             color: var(--text-color);
             font-size: 0.95rem;
             line-height: 1.6;
+            margin-bottom: 15px;
         }
 
         .close-modal {
@@ -282,36 +288,39 @@
             font-weight: bold;
             float: right;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Tipp-Button -->
-        <div class="tip-btn-container">
-            <button class="tip-toggle-btn" onclick="toggleTips(true)">💡 Hinweise anzeigen</button>
+        <div class="header-top">
+            <h1>EXIT – Dekoder</h1>
+            <button class="tip-toggle-btn" onclick="toggleTips(true)">💡 Hinweise</button>
+        </div>
+        <p class="subtitle">Wähle zuerst das Rätsel-Symbol aus und gib den Code ein.</p>
+
+        <!-- 1. Rätsel-Symbol auswählen (damit man verschiedene Rätsel auseinanderhalten kann) -->
+        <div class="section-label">1. Welches Rätsel bearbeitest du?</div>
+        <div class="puzzle-selector">
+            <div class="puzzle-tab active" onclick="selectPuzzle('◯', this)">◯ Rätsel A</div>
+            <div class="puzzle-tab" onclick="selectPuzzle('△', this)">△ Rätsel B</div>
+            <div class="puzzle-tab" onclick="selectPuzzle('⭐', this)">⭐ Rätsel C</div>
         </div>
 
-        <h1>EXIT – Das Rätsel</h1>
-        <p class="subtitle">Klicke Symbole an, um den 3er-Code einzugeben.</p>
-        
+        <!-- 2. Code eingeben -->
         <div class="code-form">
-            <!-- Symbol-Auswahl zum Anklicken -->
+            <div class="section-label">2. Gib den 3stelligen Code ein:</div>
+            
             <div class="symbol-palette">
-                <button class="symbol-btn" onclick="appendSymbol('◯')">◯</button>
-                <button class="symbol-btn" onclick="appendSymbol('△')">△</button>
-                <button class="symbol-btn" onclick="appendSymbol('⭐')">⭐</button>
-                <button class="symbol-btn" onclick="appendSymbol('▢')">▢</button>
+                <button class="symbol-btn" onclick="appendSymbol('1')">1</button>
+                <button class="symbol-btn" onclick="appendSymbol('2')">2</button>
+                <button class="symbol-btn" onclick="appendSymbol('3')">3</button>
+                <button class="symbol-btn" onclick="appendSymbol('4')">4</button>
             </div>
 
             <div class="input-group">
                 <input type="text" id="codeInput" readonly placeholder="---">
-                <button class="submit-btn" onclick="checkCode()">Öffnen</button>
+                <button class="submit-btn" onclick="checkCode()">Prüfen</button>
             </div>
 
             <div class="action-row">
@@ -319,73 +328,86 @@
             </div>
         </div>
 
-        <div class="message-box" id="messageBox">
-            <!-- Hier erscheinen Fehlermeldungen oder Lösungskarten -->
-        </div>
+        <div class="message-box" id="messageBox"></div>
     </div>
 
-    <!-- Tipp-Modal (Popup) -->
+    <!-- Tipp-Modal -->
     <div class="modal" id="tipModal">
         <div class="modal-content">
-            <h3>Geheime Hinweise</h3>
-            <ul>
-                <li><strong>Tipp 1:</strong> Zähle die Ecken der geometrischen Formen im Bilderrätsel.</li>
-                <li><strong>Tipp 2:</strong> Der Stern zeigt immer nach Norden – vielleicht ist die Reihenfolge wichtig?</li>
-            </ul>
+            <h3 id="tipTitle">Hinweise für Rätsel ◯</h3>
+            <p id="tipText">Lade die Hinweise für das aktuelle Rätsel...</p>
             <button class="close-modal" onclick="toggleTips(false)">Schließen</button>
         </div>
     </div>
 
     <script>
-        // Definition der verschiedenen Code-Kombinationen (jetzt mit Symbolen)
-        const codes = {
-            "◯△⭐": {
-                title: "Lösungskarte A – Das mystische Siegel",
-                text: "Das Siegel bricht auf! Du hörst ein schweres Rumpeln im Hintergrund. Ein geheimer Durchgang tut sich auf."
+        // Aktuell ausgewähltes Rätsel-Symbol
+        let currentPuzzle = "◯";
+
+        // Unterschiedliche Tipps für jedes Rätsel-Symbol
+        const tipsData = {
+            "◯": { title: "Hinweise: Rätsel ◯", text: "Tipp 1: Zähle die Symbole im Bild.<br>Tipp 2: Die Farbe des Rahmens gibt dir die Richtung vor." },
+            "△": { title: "Hinweise: Rätsel △", text: "Tipp 1: Schaue dir die Zahlen genau an.<br>Tipp 2: Manchmal hilft spiegelverkehrtes Lesen." },
+            "⭐": { title: "Hinweise: Rätsel ⭐", text: "Tipp 1: Der Weg führt über die Ecken.<br>Tipp 2: Ignoriere die kleinen Symbole nicht." }
+        };
+
+        // Verschiedene richtige Kombinationen pro Rätsel-Symbol
+        const solutionsData = {
+            "◯": {
+                "123": { title: "Lösungskarte ◯ - 1", text: "Richtig! Du öffnest das erste Fach des Kreises und findest einen kleinen Schlüssel." }
             },
-            "⭐▢◯": {
-                title: "Lösungskarte B – Die Schatulle",
-                text: "Ein leises 'Klick' ertönt. Der Deckel der Schatulle hebt sich und gibt eine alte Pergamentrolle frei."
+            "△": {
+                "241": { title: "Lösungskarte △ - 1", text: "Ausgezeichnet! Das Dreieck-Rätsel ist gelöst. Ein versteckter Text erscheint." }
             },
-            "△△◯": {
-                title: "Lösungskarte C – Der Spiegel",
-                text: "Die Reflexion im Spiegel verändert sich und zeigt dir plötzlich Symbole, die vorher unsichtbar waren."
+            "⭐": {
+                "432": { title: "Lösungskarte ⭐ - 1", text: "Klasse! Der Stern leuchtet auf und gibt den Weg in den nächsten Bereich frei." }
             }
         };
 
-        // Funktion zum Hinzufügen von Symbolen (max. 3 Zeichen/Symbole)
-        function appendSymbol(symbol) {
+        function selectPuzzle(symbol, element) {
+            currentPuzzle = symbol;
+            // Aktiven Tab markieren
+            document.querySelectorAll('.puzzle-tab').forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+            clearCode();
+        }
+
+        function appendSymbol(char) {
             const inputField = document.getElementById("codeInput");
             if (inputField.value.length < 3) {
-                inputField.value += symbol;
+                inputField.value += char;
             }
         }
 
-        // Funktion zum Zurücksetzen der Eingabe
         function clearCode() {
             document.getElementById("codeInput").value = "";
             document.getElementById("messageBox").innerHTML = "";
         }
 
-        // Tipp-Fenster öffnen/schließen
         function toggleTips(show) {
             const modal = document.getElementById("tipModal");
-            modal.style.display = show ? "flex" : "none";
+            if (show) {
+                document.getElementById("tipTitle").innerText = tipsData[currentPuzzle].title;
+                document.getElementById("tipText").innerHTML = tipsData[currentPuzzle].text;
+                modal.style.display = "flex";
+            } else {
+                modal.style.display = "none";
+            }
         }
 
-        // Code überprüfen
         function checkCode() {
             const inputField = document.getElementById("codeInput");
             const messageBox = document.getElementById("messageBox");
-            const enteredCode = inputField.value.trim();
+            const code = inputField.value.trim();
 
-            if (enteredCode.length < 3) {
-                messageBox.innerHTML = `<div class="alert error">Der Code muss aus 3 Symbolen bestehen!</div>`;
+            if (code.length < 3) {
+                messageBox.innerHTML = `<div class="alert error">Der Code muss 3 Zeichen lang sein!</div>`;
                 return;
             }
 
-            if (codes[enteredCode]) {
-                const card = codes[enteredCode];
+            // Prüfen, ob für dieses Rätsel-Symbol dieser Code existiert
+            if (solutionsData[currentPuzzle] && solutionsData[currentPuzzle][code]) {
+                const card = solutionsData[currentPuzzle][code];
                 messageBox.innerHTML = `
                     <div class="solution-card">
                         <h3>${card.title}</h3>
@@ -393,7 +415,7 @@
                     </div>
                 `;
             } else {
-                messageBox.innerHTML = `<div class="alert error">Falsch! Dieser Code bewirkt nichts. Suche weiter.</div>`;
+                messageBox.innerHTML = `<div class="alert error">Falsch! Für das Symbol ${currentPuzzle} ist dieser Code ungültig.</div>`;
             }
         }
     </script>
