@@ -3,163 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXIT Rätsel - Das Symbol-Schloss</title>
+    <title>EXIT – Das Online-Abenteuer</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        :root {
+            --bg-color: #0d0f12;
+            --panel-bg: #161922;
+            --accent-color: #d4af37; /* Mystisches Gold */
+            --accent-hover: #f39c12;
+            --error-color: #e74c3c;
+            --success-color: #2ecc71;
+            --text-color: #e0e0e0;
+            --text-muted: #888888;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-image: radial-gradient(circle at center, #1b202c 0%, var(--bg-color) 100%);
+        }
+
         .container {
-            background: rgba(42, 42, 42, 0.9);
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
-            text-align: center;
-            max-width: 450px;
             width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 550px;
+            background-color: var(--panel-bg);
+            border: 2px solid #2a2f40;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
         }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+        }
+
         h1 {
-            color: #ff9800;
-            margin-top: 0;
+            text-align: center;
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
-        p {
-            color: #cccccc;
-            font-size: 15px;
+
+        p.subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
         }
-        .symbol-display {
-            font-size: 35px;
-            background: #1a1a1a;
-            padding: 15px;
-            border-radius: 8px;
-            border: 2px solid #555;
-            margin: 20px 0;
-            letter-spacing: 15px;
-            min-height: 50px;
+
+        .code-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
-        .button-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+
+        .input-group {
+            display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            justify-content: center;
         }
-        .symbol-btn {
-            font-size: 28px;
-            padding: 15px;
-            cursor: pointer;
-            background-color: #333;
-            border: 1px solid #555;
+
+        input[type="text"] {
+            flex: 1;
+            background-color: #0b0d12;
+            border: 2px solid #333a4d;
             border-radius: 8px;
-            transition: background 0.2s, transform 0.1s;
+            color: var(--accent-color);
+            font-size: 1.4rem;
+            text-align: center;
+            letter-spacing: 5px;
+            padding: 12px;
+            outline: none;
+            transition: border-color 0.3s;
         }
-        .symbol-btn:hover {
-            background-color: #444;
-            transform: translateY(-2px);
+
+        input[type="text"]:focus {
+            border-color: var(--accent-color);
         }
-        .action-btn {
-            padding: 10px 20px;
-            font-size: 15px;
-            cursor: pointer;
-            background-color: #ff9800;
-            color: white;
+
+        button {
+            background-color: var(--accent-color);
+            color: #000;
             border: none;
             border-radius: 8px;
+            font-size: 1rem;
             font-weight: bold;
-            margin: 5px;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .action-btn:hover {
-            background-color: #e68900;
+
+        button:hover {
+            background-color: var(--accent-hover);
         }
-        .btn-clear {
-            background-color: #d32f2f;
+
+        button:active {
+            transform: scale(0.98);
         }
-        .btn-clear:hover {
-            background-color: #b71c1c;
+
+        /* Nachrichten- und Kartenbereich */
+        .message-box {
+            margin-top: 25px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        #result {
+
+        .alert {
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .alert.error {
+            background-color: rgba(231, 76, 60, 0.15);
+            border: 1px solid var(--error-color);
+            color: var(--error-color);
+        }
+
+        .solution-card {
+            width: 100%;
+            background-color: #1f2433;
+            border: 1px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 20px;
+            animation: fadeIn 0.5s ease-in-out;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.1);
+        }
+
+        .solution-card h3 {
+            color: var(--accent-color);
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+            border-bottom: 1px solid #333a4d;
+            padding-bottom: 5px;
+        }
+
+        .solution-card p {
+            color: var(--text-color);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .hint-helper {
             margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>🔐 Das Symbol-Schloss</h1>
-        <p>Kombiniere die 3 richtigen Symbole, um das Schloss zu knacken!</p>
+        <h1>EXIT – Das Rätsel</h1>
+        <p class="subtitle">Gib den 3stelligen Code ein, um das Rätsel zu lösen.</p>
         
-        <!-- Anzeige des eingegebenen Codes -->
-        <div class="symbol-display" id="display">___</div>
-        
-        <!-- Symbol-Auswahl -->
-        <div class="button-grid">
-            <button class="symbol-btn" onclick="addSymbol('⭐')">⭐</button>
-            <button class="symbol-btn" onclick="addSymbol('🗝️')">🗝️</button>
-            <button class="symbol-btn" onclick="addSymbol('🌙')">🌙</button>
-            <button class="symbol-btn" onclick="addSymbol('💀')">💀</button>
-            <button class="symbol-btn" onclick="addSymbol('🧪')">🧪</button>
-            <button class="symbol-btn" onclick="addSymbol('👁️')">👁️</button>
+        <div class="code-form">
+            <div class="input-group">
+                <input type="text" id="codeInput" maxlength="5" placeholder="???">
+                <button onclick="checkCode()">Öffnen</button>
+            </div>
         </div>
-        
-        <!-- Steuerungs-Buttons -->
-        <div>
-            <button class="action-btn btn-clear" onclick="clearCode()">Löschen</button>
-            <button class="action-btn" onclick="checkCode()">Überprüfen</button>
+
+        <div class="message-box" id="messageBox">
+            <!-- Hier erscheinen Fehlermeldungen oder Lösungskarten -->
         </div>
-        
-        <!-- Ergebnis -->
-        <p id="result"></p>
+
+        <div class="hint-helper">
+            Tipp: Symbole können als Kürzel eingegeben werden (z.B. s=Stern, k=Kreis, d=Dreieck) oder nutze Zahlen wie 123.
+        </div>
     </div>
 
     <script>
-        let currentCode = [];
-        const maxCodeLength = 3;
-        const secretCode = "⭐🗝️🌙"; // Der richtige Code (Stern, Schlüssel, Mond)
-
-        function addSymbol(symbol) {
-            if (currentCode.length < maxCodeLength) {
-                currentCode.push(symbol);
-                updateDisplay();
+        // Definition der verschiedenen Code-Kombinationen und ihrer Lösungskarten
+        const codes = {
+            "123": {
+                title: "Lösungskarte A – Das alte Buch",
+                text: "Du hast das erste Schloss geknackt! Auf der Innenseite des Buchdeckels entdeckst du eine geheimnisvolle Notiz: 'Suche dort, wo das Licht erlischt.' Gehe zu Rätsel 2 über."
+            },
+            "k-d-s": {
+                title: "Lösungskarte B – Das versteckte Fach",
+                text: "Ausgezeichnet! Das Symbol-Rätsel ist gelöst. Eine kleine Holzklappe springt auf und gibt den Blick frei auf einen messingfarbenen Schlüssel."
+            },
+            "7-7-7": {
+                title: "Lösungskarte C – Der Geheimcode",
+                text: "Glückwunsch! Die mystische Dreier-Sieben schaltet den Hauptmechanismus frei. Der Weg in den nächsten Raum öffnet sich."
             }
-        }
+        };
 
-        function clearCode() {
-            currentCode = [];
-            updateDisplay();
-            document.getElementById('result').textContent = "";
-        }
-
-        function updateDisplay() {
-            let displayString = "";
-            for (let i = 0; i < maxCodeLength; i++) {
-                displayString += currentCode[i] || "_";
+        // Event-Listener, damit man auch mit der Enter-Taste abschicken kann
+        document.getElementById("codeInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                checkCode();
             }
-            document.getElementById('display').textContent = displayString;
-        }
+        });
 
         function checkCode() {
-            const userCode = currentCode.join("");
-            const result = document.getElementById('result');
+            const inputField = document.getElementById("codeInput");
+            const messageBox = document.getElementById("messageBox");
+            // Eingabe bereinigen: Leerzeichen entfernen und Kleinbuchstaben nutzen
+            const enteredCode = inputField.value.trim().toLowerCase();
 
-            if (currentCode.length < maxCodeLength) {
-                result.style.color = "#ff9800";
-                result.textContent = "⚠️ Bitte wähle 3 Symbole aus!";
+            // Prüfen, ob das Feld leer ist
+            if (enteredCode === "") {
+                messageBox.innerHTML = `<div class="alert error">Bitte gib einen Code ein!</div>`;
                 return;
             }
 
-            if (userCode === secretCode) {
-                result.style.color = "#4CAF50";
-                result.textContent = "🎉 Richtig! Das Schloss springt auf!";
+            // Prüfen, ob der Code in unserem Objekt existiert
+            if (codes[enteredCode]) {
+                const card = codes[enteredCode];
+                messageBox.innerHTML = `
+                    <div class="solution-card">
+                        <h3>${card.title}</h3>
+                        <p>${card.text}</p>
+                    </div>
+                `;
             } else {
-                result.style.color = "#F44336";
-                result.textContent = "❌ Falsch! Das Schloss bleibt verschlossen.";
+                // Falscher Code
+                messageBox.innerHTML = `<div class="alert error">Falsch! Dieser Code bewirkt nichts. Suche weiter nach Hinweisen.</div>`;
             }
         }
     </script>
