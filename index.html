@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mein Rätsel-Abenteuer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .container {
+            background: #2a2a2a;
+            padding: 30px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            max-width: 400px;
+        }
+        input {
+            padding: 10px;
+            font-size: 18px;
+            width: 120px;
+            text-align: center;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #e68900;
+        }
+        .hidden {
+            display: none;
+        }
+        #hint {
+            color: #ffeb3b;
+            margin-top: 15px;
+            font-style: italic;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🔐 Escape Rätsel</h1>
+        <p>Knacke den 3-stelligen Zahlencode, um das Rätsel zu lösen!</p>
+        
+        <!-- Hinweis-Bereich -->
+        <button onclick="showHint()">Tipp anzeigen</button>
+        <p id="hint" class="hidden">Tipp: Der Code lautet 123 (du kannst ihn im Code ändern!).</p>
+        
+        <br><br>
+        
+        <!-- Code-Eingabe -->
+        <input type="text" id="codeInput" maxlength="3" placeholder="___">
+        <br>
+        <button onclick="checkCode()">Code überprüfen</button>
+        
+        <!-- Ergebnis-Anzeige -->
+        <p id="result"></p>
+    </div>
+
+    <script>
+        function showHint() {
+            document.getElementById('hint').classList.remove('hidden');
+        }
+
+        function checkCode() {
+            const secretCode = "123"; // Hier kannst du den geheimen Code anpassen!
+            const userCode = document.getElementById('codeInput').value;
+            const result = document.getElementById('result');
+
+            if (userCode === secretCode) {
+                result.style.color = "#4CAF50";
+                result.textContent = "🎉 Richtig! Du hast das Rätsel gelöst!";
+            } else {
+                result.style.color = "#F44336";
+                result.textContent = "❌ Falsch! Versuche es noch einmal.";
+            }
+        }
+    </script>
+
+</body>
+</html>
