@@ -3,52 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mein Rätsel-Abenteuer</title>
+    <title>Escape Room - Das Rätsel</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
-            font-family: Arial, sans-serif;
-            background-color: #1a1a1a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             color: #ffffff;
-            text-align: center;
-            padding-top: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
         .container {
-            background: #2a2a2a;
-            padding: 30px;
-            border-radius: 10px;
-            display: inline-block;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            max-width: 400px;
+            background: rgba(42, 42, 42, 0.85);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        h1 {
+            margin-top: 0;
+            color: #ff9800;
+        }
+        p {
+            color: #cccccc;
+            font-size: 15px;
+            line-height: 1.5;
         }
         input {
-            padding: 10px;
-            font-size: 18px;
-            width: 120px;
+            padding: 12px;
+            font-size: 22px;
+            width: 150px;
             text-align: center;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 2px solid #555;
+            background-color: #1a1a1a;
+            color: white;
+            margin: 15px 0;
+            letter-spacing: 5px;
+        }
+        input:focus {
+            border-color: #ff9800;
+            outline: none;
         }
         button {
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-size: 16px;
             cursor: pointer;
             background-color: #ff9800;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             font-weight: bold;
+            transition: background 0.2s, transform 0.1s;
         }
         button:hover {
             background-color: #e68900;
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .btn-hint {
+            background-color: #333;
+            color: #ffeb3b;
+            border: 1px solid #ffeb3b;
+            margin-bottom: 20px;
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+        .btn-hint:hover {
+            background-color: #444;
         }
         .hidden {
             display: none;
         }
         #hint {
             color: #ffeb3b;
-            margin-top: 15px;
+            margin-top: 10px;
             font-style: italic;
+            background: rgba(255, 235, 59, 0.1);
+            padding: 10px;
+            border-radius: 5px;
         }
         #result {
             margin-top: 20px;
@@ -61,18 +104,22 @@
 
     <div class="container">
         <h1>🔐 Escape Rätsel</h1>
-        <p>Knacke den 3-stelligen Zahlencode, um das Rätsel zu lösen!</p>
+        <p>Du bist in einem virtuellen Raum gefangen. Löse das Rätsel und finde den 3-stelligen Code, um das Schloss zu öffnen!</p>
         
+        <br>
         <!-- Hinweis-Bereich -->
-        <button onclick="showHint()">Tipp anzeigen</button>
-        <p id="hint" class="hidden">Tipp: Der Code lautet 123 (du kannst ihn im Code ändern!).</p>
+        <button class="btn-hint" onclick="showHint()">💡 Tipp anzeigen</button>
+        <div id="hint" class="hidden">Tipp: Die Antwort findest du, wenn du 100 + 23 rechnest.</div>
         
-        <br><br>
+        <br>
         
         <!-- Code-Eingabe -->
-        <input type="text" id="codeInput" maxlength="3" placeholder="___">
-        <br>
-        <button onclick="checkCode()">Code überprüfen</button>
+        <div>
+            <input type="text" id="codeInput" maxlength="3" placeholder="___">
+        </div>
+        <div>
+            <button onclick="checkCode()">Code überprüfen</button>
+        </div>
         
         <!-- Ergebnis-Anzeige -->
         <p id="result"></p>
@@ -84,16 +131,16 @@
         }
 
         function checkCode() {
-            const secretCode = "123"; // Hier kannst du den geheimen Code anpassen!
+            const secretCode = "123"; // Hier den Code anpassen!
             const userCode = document.getElementById('codeInput').value;
             const result = document.getElementById('result');
 
             if (userCode === secretCode) {
                 result.style.color = "#4CAF50";
-                result.textContent = "🎉 Richtig! Du hast das Rätsel gelöst!";
+                result.textContent = "🎉 Richtig! Das Schloss springt auf!";
             } else {
                 result.style.color = "#F44336";
-                result.textContent = "❌ Falsch! Versuche es noch einmal.";
+                result.textContent = "❌ Falsch! Das Schloss bleibt verschlossen.";
             }
         }
     </script>
